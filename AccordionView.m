@@ -22,7 +22,7 @@
 @implementation AccordionView
 
 @synthesize selectedIndex, isHorizontal, animationDuration, animationCurve;
-@synthesize allowsMultipleSelection, selectionIndexes, delegate;
+@synthesize allowsMultipleSelection, wizardMode, selectionIndexes, delegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -49,6 +49,7 @@
         scrollView.delegate = (id) self;
         
         self.allowsMultipleSelection = NO;
+        self.wizardMode = NO;
     }
     
     return self;
@@ -86,7 +87,18 @@
             [aHeader addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchUpInside];
         }
         
-        if ([selectionIndexes count] == 0) {
+        if (wizardMode) {
+            // Always select the "last" added view
+            [self setSelectedIndex:[views count] - 1];
+
+            // Hide the last added header
+            [aHeader setHidden:YES];
+
+            // Show the others headers
+            for (int i = 0; i < [views count] - 1; i++) {
+                [[headers objectAtIndex:i] setHidden:NO];
+            }
+        } else if ([selectionIndexes count] == 0) {
             [self setSelectedIndex:0];
         }
     }
@@ -130,6 +142,12 @@
 }
 
 - (void)touchDown:(id)sender {
+    if (wizardMode) {
+        // Show the all headers
+        for (int i = 0; i < [views count]; i++) {
+            [[headers objectAtIndex:i] setHidden:NO];
+        }
+    }
     if (allowsMultipleSelection) {
         NSMutableIndexSet *mis = [selectionIndexes mutableCopy];
         if ([selectionIndexes containsIndex:[sender tag]]) {
@@ -159,11 +177,18 @@
             id aHeader = [headers objectAtIndex:i];
             id aView = [views objectAtIndex:i];
             
+            if (wizardMode) {
+                // Hides the header when the active is the last one
+                [aHeader setHidden:[selectionIndexes containsIndex:i] && i == [views count] - 1];
+            }
+
             CGSize originalSize = [[originalSizes objectAtIndex:i] CGSizeValue];
             CGRect viewFrame = [aView frame];
             CGRect headerFrame = [aHeader frame];
             headerFrame.origin.y = height;
-            height += headerFrame.size.height;
+            if (![aHeader isHidden]) {
+                height += headerFrame.size.height;
+            }
             viewFrame.origin.y = height;
             
             if ([selectionIndexes containsIndex:i]) {
