@@ -46,7 +46,7 @@
         self.autoresizesSubviews = NO;
         scrollView.autoresizesSubviews = NO;
         scrollView.scrollsToTop = NO;
-        scrollView.delegate = self;
+        scrollView.delegate = (id) self;
         
         self.allowsMultipleSelection = NO;
     }
