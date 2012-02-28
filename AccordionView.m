@@ -22,7 +22,7 @@
 @implementation AccordionView
 
 @synthesize selectedIndex, isHorizontal, animationDuration, animationCurve;
-@synthesize allowsMultipleSelection, wizardMode, selectionIndexes, delegate;
+@synthesize allowsMultipleSelection, wizardMode, autoToFitHeight, selectionIndexes, delegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -50,6 +50,7 @@
         
         self.allowsMultipleSelection = NO;
         self.wizardMode = NO;
+        self.autoToFitHeight = NO;
     }
     
     return self;

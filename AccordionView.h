@@ -29,8 +29,8 @@
     NSMutableArray *views;
     NSMutableArray *headers;
     NSMutableArray *originalSizes;
-    
     UIScrollView *scrollView;
+    int initHeightForAutoFit;
 }
 
 - (void)addHeader:(id)aHeader withView:(id)aView;
@@ -43,6 +43,7 @@
 @property (nonatomic, assign) UIViewAnimationCurve animationCurve;
 @property (nonatomic, assign) BOOL allowsMultipleSelection;
 @property (nonatomic, assign) BOOL wizardMode;
+@property (nonatomic, assign) BOOL autoToFitHeight;
 @property (nonatomic, strong) NSIndexSet *selectionIndexes;
 @property (nonatomic, strong) id <AccordionViewDelegate> delegate;
 
