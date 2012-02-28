@@ -222,6 +222,7 @@
         [UIView setAnimationCurve:self.animationCurve];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [scrollView setContentSize:CGSizeMake([self frame].size.width, height)];
+        [scrollView flashScrollIndicators];
         [UIView commitAnimations];
 
         
