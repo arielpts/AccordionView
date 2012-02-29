@@ -22,7 +22,7 @@
 @implementation AccordionView
 
 @synthesize selectedIndex, isHorizontal, animationDuration, animationCurve;
-@synthesize allowsMultipleSelection, wizardMode, selectionIndexes, delegate;
+@synthesize allowsMultipleSelection, wizardMode, autoToFitHeight, selectionIndexes, delegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -50,6 +50,7 @@
         
         self.allowsMultipleSelection = NO;
         self.wizardMode = NO;
+        self.autoToFitHeight = NO;
     }
     
     return self;
@@ -104,6 +105,14 @@
     }
 }
 
+- (id)headerAtIndex:(int)index {
+    return [headers objectAtIndex:index];
+}
+
+- (int)segmentsCount {
+    return [headers count];
+}
+
 - (void)setSelectionIndexes:(NSIndexSet *)aSelectionIndexes {
     if ([headers count] == 0) return;
     if (!allowsMultipleSelection && [aSelectionIndexes count] > 1) {
@@ -139,6 +148,10 @@
     [originalSizes replaceObjectAtIndex:index withObject:[NSValue valueWithCGSize:size]];
     
     if ([selectionIndexes containsIndex:index]) [self setNeedsLayout];
+}
+
+- (void)gotoIndex:(int)index  {
+    [self touchDown:[self headerAtIndex:index]];
 }
 
 - (void)touchDown:(id)sender {
@@ -221,6 +234,7 @@
         [UIView setAnimationCurve:self.animationCurve];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [scrollView setContentSize:CGSizeMake([self frame].size.width, height)];
+        [scrollView flashScrollIndicators];
         [UIView commitAnimations];
 
         
