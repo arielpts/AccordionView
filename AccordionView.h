@@ -34,8 +34,12 @@
 }
 
 - (void)addHeader:(id)aHeader withView:(id)aView;
+- (id)headerAtIndex:(int)index;
+- (int)segmentsCount;
 - (void)setOriginalSize:(CGSize)size forIndex:(NSUInteger)index;
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView;
+- (void)touchDown:(id)sender;
+- (void)gotoIndex:(int)index;
 
 @property (nonatomic, assign) NSInteger selectedIndex;
 @property (readonly) BOOL isHorizontal;
