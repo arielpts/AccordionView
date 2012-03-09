@@ -89,16 +89,16 @@
         }
         
         if (wizardMode) {
-            // Always select the "last" added view
-            [self setSelectedIndex:[views count] - 1];
-
-            // Hide the last added header
-            [aHeader setHidden:YES];
-
             // Show the others headers
             for (int i = 0; i < [views count] - 1; i++) {
                 [[headers objectAtIndex:i] setHidden:NO];
             }
+
+            // Hide the last added header
+            [aHeader setHidden:YES];
+
+            // Always select the "last" added view
+            [self gotoIndex:[self segmentsCount] -1];
         } else if ([selectionIndexes count] == 0) {
             [self setSelectedIndex:0];
         }
