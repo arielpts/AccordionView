@@ -22,7 +22,7 @@
 @implementation AccordionView
 
 @synthesize selectedIndex, isHorizontal, animationDuration, animationCurve;
-@synthesize allowsMultipleSelection, wizardMode, selectionIndexes, delegate;
+@synthesize allowsMultipleSelection, wizardMode, autoToFitHeight, selectionIndexes, delegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -50,6 +50,7 @@
         
         self.allowsMultipleSelection = NO;
         self.wizardMode = NO;
+        self.autoToFitHeight = NO;
     }
     
     return self;
@@ -88,20 +89,28 @@
         }
         
         if (wizardMode) {
-            // Always select the "last" added view
-            [self setSelectedIndex:[views count] - 1];
-
-            // Hide the last added header
-            [aHeader setHidden:YES];
-
             // Show the others headers
             for (int i = 0; i < [views count] - 1; i++) {
                 [[headers objectAtIndex:i] setHidden:NO];
             }
+
+            // Hide the last added header
+            [aHeader setHidden:YES];
+
+            // Always select the "last" added view
+            [self gotoIndex:[self segmentsCount] -1];
         } else if ([selectionIndexes count] == 0) {
             [self setSelectedIndex:0];
         }
     }
+}
+
+- (id)headerAtIndex:(int)index {
+    return [headers objectAtIndex:index];
+}
+
+- (int)segmentsCount {
+    return [headers count];
 }
 
 - (void)setSelectionIndexes:(NSIndexSet *)aSelectionIndexes {
@@ -139,6 +148,10 @@
     [originalSizes replaceObjectAtIndex:index withObject:[NSValue valueWithCGSize:size]];
     
     if ([selectionIndexes containsIndex:index]) [self setNeedsLayout];
+}
+
+- (void)gotoIndex:(int)index  {
+    [self touchDown:[self headerAtIndex:index]];
 }
 
 - (void)touchDown:(id)sender {
@@ -221,6 +234,7 @@
         [UIView setAnimationCurve:self.animationCurve];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [scrollView setContentSize:CGSizeMake([self frame].size.width, height)];
+        [scrollView flashScrollIndicators];
         [UIView commitAnimations];
 
         

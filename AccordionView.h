@@ -29,13 +29,17 @@
     NSMutableArray *views;
     NSMutableArray *headers;
     NSMutableArray *originalSizes;
-    
     UIScrollView *scrollView;
+    int initHeightForAutoFit;
 }
 
 - (void)addHeader:(id)aHeader withView:(id)aView;
+- (id)headerAtIndex:(int)index;
+- (int)segmentsCount;
 - (void)setOriginalSize:(CGSize)size forIndex:(NSUInteger)index;
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView;
+- (void)touchDown:(id)sender;
+- (void)gotoIndex:(int)index;
 
 @property (nonatomic, assign) NSInteger selectedIndex;
 @property (readonly) BOOL isHorizontal;
@@ -43,6 +47,7 @@
 @property (nonatomic, assign) UIViewAnimationCurve animationCurve;
 @property (nonatomic, assign) BOOL allowsMultipleSelection;
 @property (nonatomic, assign) BOOL wizardMode;
+@property (nonatomic, assign) BOOL autoToFitHeight;
 @property (nonatomic, strong) NSIndexSet *selectionIndexes;
 @property (nonatomic, strong) id <AccordionViewDelegate> delegate;
 
