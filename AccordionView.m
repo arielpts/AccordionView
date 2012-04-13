@@ -109,6 +109,16 @@
     return [headers objectAtIndex:index];
 }
 
+- (void) removeHeaderAndViewAtIndex:(int)index {
+    if ([headers count] - 1 >= index) {
+        [(UIView*) [headers objectAtIndex:index] removeFromSuperview];
+        [(UIView*) [views objectAtIndex:index] removeFromSuperview];
+        [headers removeObjectAtIndex:index];
+        [views removeObjectAtIndex:index];
+        [self layoutSubviews];
+    }
+}
+
 - (int)segmentsCount {
     return [headers count];
 }

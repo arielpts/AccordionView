@@ -40,6 +40,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView;
 - (void)touchDown:(id)sender;
 - (void)gotoIndex:(int)index;
+- (void) removeHeaderAndViewAtIndex:(int)index;
 
 @property (nonatomic, assign) NSInteger selectedIndex;
 @property (readonly) BOOL isHorizontal;
